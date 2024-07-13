@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "robotframework-terraformlibrary"
+version = "0.1.0"
+description = "A Robotframework Library wrapping the Terraform CLI"
+license = "Apache-2.0"
+authors = ["Nils Balkow-Tychsen"]
+maintainers = ["Nils Balkow-Tychsen"]
+readme = "./docs/README.md"
+homepage = "https://github.com/nilsty/robotframework-terraformlibrary"
+packages = [
+    { include = "TerraformLibrary" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+robotframework = ">=4"
+robotframework-pythonlibcore = ">=3"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+invoke = "*"
+coverage = "^6.3.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

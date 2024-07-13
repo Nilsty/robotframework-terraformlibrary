@@ -1,0 +1,16 @@
+results/
+log.html
+report.html
+output.xml
+__pycache__/
+.coverage
+htmlcov/
+dist/
+.coverage*
+**/.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+.pytest_cache
+poetry.lock
+venv
