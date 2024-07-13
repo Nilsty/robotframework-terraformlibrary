@@ -4,6 +4,10 @@ TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
 https://developer.hashicorp.com/terraform/cli
 
 ---
+## Keyword Documentation
+[Link to the keyword documentation](https://nilsty.github.io/robotframework-terraformlibrary/terraformlibrary.html)
+
+---
 ## Installation
 If you already have Python >= 3.8 with pip installed, you can simply run:  
 `pip install --upgrade robotframework-terraformlibrary`
