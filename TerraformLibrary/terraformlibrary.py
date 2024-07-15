@@ -1,9 +1,18 @@
 """
 # Terraform Library for Robot Framework
 
-TerraformLibrary is a wrapper for Hashicorp Terraform
+The TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
+
+With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from 
+terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used 
+with any terraform script. 
 
 https://developer.hashicorp.com/terraform/cli
+
+---
+## Keyword Documentation
+[Link to the keyword documentation](https://nilsty.github.io/robotframework-terraformlibrary/terraformlibrary.html)
+
 ---
 ## Installation
 If you already have Python >= 3.8 with pip installed, you can simply run:  
@@ -54,10 +63,9 @@ class TerraformLibrary:
     """
     The Terraform Library is a wrapper for the Terraform CLI.
 
-    Commands like `terraform init`, `plan`, `apply` and `destroy` can be used 
-    with any terraform script. With integration into Robot Framework, inputs
-    can be passed from tests to terraform executions and outputs from 
-    terraform script can be used in robot tests.
+    With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from 
+    terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used 
+    with any terraform script. 
 
     """
     def _run_command(self, command: str):

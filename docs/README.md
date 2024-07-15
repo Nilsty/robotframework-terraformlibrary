@@ -1,5 +1,11 @@
+
 # Terraform Library for Robot Framework
-TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
+
+The TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
+
+With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from 
+terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used 
+with any terraform script. 
 
 https://developer.hashicorp.com/terraform/cli
 
@@ -44,3 +50,4 @@ Run Terraform Destroy
     ${rc}    ${output}    Terraform Destroy    ${PATH_TO_TERRAFORM_SCRIPT}
     Should Contain    ${output}    Destroy complete! Resources: 1 destroyed.
 ```
+
