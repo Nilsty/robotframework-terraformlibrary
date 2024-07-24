@@ -1,4 +1,6 @@
 # Terraform Library for Robot Framework
+[![PyPI](https://img.shields.io/pypi/v/robotframework-terraformlibrary)](https://pypi.org/project/robotframework-kubelibrary/)[![PyPi downloads](https://img.shields.io/pypi/dm/robotframework-terraformlibrary.svg)](https://pypi.python.org/pypi/robotframework-terraformlibrary)
+
 TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
 
 https://developer.hashicorp.com/terraform/cli
