@@ -46,3 +46,28 @@ Run Terraform Destroy
     ${rc}    ${output}    Terraform Destroy    ${PATH_TO_TERRAFORM_SCRIPT}
     Should Contain    ${output}    Destroy complete! Resources: 1 destroyed.
 ```
+
+---
+## Development
+
+Install `poetry` on your system with `pip install poetry`.
+
+Then setup the current project in a virtual env for development:
+
+```
+$ poetry env use $(which python3)
+$ source $(poetry env info --path)/bin/activate
+$ poetry install
+```
+
+Run the tests:
+
+```
+$ poetry run pytest -v
+```
+
+Exit the virtualenv
+
+```
+deactivate
+```
