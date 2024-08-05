@@ -56,6 +56,7 @@ Run Terraform Destroy
 import os
 import subprocess
 import json
+from robot.api import logger
 from robot.api.deco import library
 
 @library(scope="GLOBAL", auto_keywords=True)
@@ -68,12 +69,15 @@ class TerraformLibrary:
     with any terraform script. 
 
     """
-    def _run_command(self, command: str):
+
+    def _run_command(self, command: str, include_stderr: bool = False):
         process = subprocess.run(
-            command, shell=True, capture_output=True
+            command, shell=True, stdout=subprocess.PIPE, stderr=(subprocess.STDOUT if include_stderr else subprocess.PIPE)
         )
         output = process.stdout.decode()
         rc = process.returncode
+        if process.stderr:
+            logger.write("stderr = " + process.stderr.decode())
         return rc, output
 
     def terraform_init(self, script_path: str):
@@ -89,7 +93,7 @@ class TerraformLibrary:
         Returns the return code and the output of the terraform command.
         """
         command = f"terraform -chdir={script_path} init -no-color"
-        rc, output = self._run_command(command)
+        rc, output = self._run_command(command, include_stderr=True)
         return rc, output
     
     def terraform_plan(self, script_path: str):
@@ -105,7 +109,7 @@ class TerraformLibrary:
         Returns the return code and the output of the terraform command.
         """
         command = f"terraform -chdir={script_path} plan -no-color -input=false"
-        rc, output = self._run_command(command)
+        rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
     def terraform_apply(self, script_path: str):
@@ -121,7 +125,7 @@ class TerraformLibrary:
         Returns the return code and the output of the terraform command.
         """
         command = f"terraform -chdir={script_path} apply -auto-approve -no-color -input=false"
-        rc, output = self._run_command(command)
+        rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
     def terraform_destroy(self, script_path: str):
@@ -137,7 +141,7 @@ class TerraformLibrary:
         Returns the return code and the output of the terraform command.
         """
         command = f"terraform -chdir={script_path} destroy -auto-approve -no-color -input=false"
-        rc, output = self._run_command(command)
+        rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
     def set_tf_var(self, name: str, value: str):
