@@ -32,3 +32,8 @@ Run Terraform Destroy
     Should Be Equal As Integers    ${rc}    0
     Should Contain    ${output}    Destroy complete! Resources: 1 destroyed.
     Should Contain    ${output}    - my_output = "test_value" -> null
+
+Terraform Error Is Raised
+    ${rc}    ${output}    Terraform Plan    ${TESTDATA}/tf-error
+    Should Be Equal As Integers    ${rc}    1
+    Should Contain    ${output}    Error: Reference to undeclared input variable

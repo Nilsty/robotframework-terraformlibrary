@@ -39,3 +39,8 @@ def test_terraform_destroy():
     assert rc == 0
     assert "Destroy complete! Resources: 1 destroyed." in output
     assert '- my_output = "test_value" -> null'  in output
+
+def test_terraform_error():
+    rc, output = terraform.terraform_plan(f"{testdata_directory}/tf-error")
+    assert rc == 1
+    assert "Error: Reference to undeclared input variable" in output
