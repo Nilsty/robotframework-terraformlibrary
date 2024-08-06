@@ -46,14 +46,20 @@ jobs:
       - name: Install OpenTofu
         uses: opentofu/setup-opentofu@v1
       
-      - name: Run tests
+      - name: Run unit tests
         run: |
-          poetry run invoke tests
+          poetry run invoke utests
 
-      - name: Download reports
-        uses: actions/download-artifact@v1
+      - name: Run acceptance tests
+        run: |
+          poetry run invoke atests
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
         with:
           name: reports
+          path: ${{ github.workspace }}/reports
           
       - name: Send report to commit
         if: ${{ always() }}
