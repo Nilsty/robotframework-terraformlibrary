@@ -44,3 +44,9 @@ def test_terraform_error():
     rc, output = terraform.terraform_plan(f"{testdata_directory}/tf-error")
     assert rc == 1
     assert "Error: Reference to undeclared input variable" in output
+
+def test_lib_init_opentofu():
+    terraform.__init__(executable="tofu")
+    rc, output = terraform.terraform_init(f"{testdata_directory}/simple")
+    assert rc == 0
+    assert "OpenTofu has been successfully initialized!" in output 

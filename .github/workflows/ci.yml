@@ -42,6 +42,9 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.5.7"
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
       
       - name: Run tests
         run: |

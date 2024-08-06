@@ -69,6 +69,14 @@ class TerraformLibrary:
     with any terraform script. 
 
     """
+    def __init__(self, executable="terraform"):
+        """
+        The TerraformLibrary can either use the terraform executable (default) or can be configured
+        to run OpenTofu instead by setting the executable to `tofu`.
+        | ***** Settings *****
+        | Library    TerraformLibrary    executable=tofu
+        """
+        self.exec = executable
 
     def _run_command(self, command: str, include_stderr: bool = False):
         process = subprocess.run(
@@ -92,7 +100,7 @@ class TerraformLibrary:
 
         Returns the return code and the output of the terraform command.
         """
-        command = f"terraform -chdir={script_path} init -no-color"
+        command = f"{self.exec} -chdir={script_path} init -no-color"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
     
@@ -108,7 +116,7 @@ class TerraformLibrary:
 
         Returns the return code and the output of the terraform command.
         """
-        command = f"terraform -chdir={script_path} plan -no-color -input=false"
+        command = f"{self.exec} -chdir={script_path} plan -no-color -input=false"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
@@ -124,7 +132,7 @@ class TerraformLibrary:
 
         Returns the return code and the output of the terraform command.
         """
-        command = f"terraform -chdir={script_path} apply -auto-approve -no-color -input=false"
+        command = f"{self.exec} -chdir={script_path} apply -auto-approve -no-color -input=false"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
@@ -140,7 +148,7 @@ class TerraformLibrary:
 
         Returns the return code and the output of the terraform command.
         """
-        command = f"terraform -chdir={script_path} destroy -auto-approve -no-color -input=false"
+        command = f"{self.exec} -chdir={script_path} destroy -auto-approve -no-color -input=false"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
@@ -172,7 +180,7 @@ class TerraformLibrary:
         | Should Be Equal As Strings | ${output["values"]["root_module"]["resources"][0]["name"]} | name of the first resource |
 
         """
-        command = f"terraform -chdir={script_path} show --json"
+        command = f"{self.exec} -chdir={script_path} show --json"
         rc, output = self._run_command(command)
         output_json = json.loads(output)
         return output_json
