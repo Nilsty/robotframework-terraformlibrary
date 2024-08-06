@@ -49,3 +49,16 @@ jobs:
       - name: Run tests
         run: |
           poetry run invoke tests
+
+      - name: Download reports
+        uses: actions/download-artifact@v1
+        with:
+          name: reports
+          
+      - name: Send report to commit
+        if: ${{ always() }}
+        uses: joonvena/robotframework-reporter-action@v2.5
+        with:
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+          only_summary: true
+          failed_tests_on_top: true
