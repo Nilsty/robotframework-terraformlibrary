@@ -46,13 +46,9 @@ jobs:
       - name: Install OpenTofu
         uses: opentofu/setup-opentofu@v1
       
-      - name: Run unit tests
+      - name: Run tests
         run: |
-          poetry run invoke utests
-
-      - name: Run acceptance tests
-        run: |
-          poetry run invoke atests
+          poetry run invoke tests
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

@@ -25,7 +25,6 @@ Run OpenTofu Apply
 
 Inspect OpenTofu State
     ${output}    Get Terraform State    ${TESTDATA}/simple
-    Log    ${output}
     Should Be Equal As Strings    ${output["values"]["root_module"]["resources"][0]["name"]}    foo
 
 Run OpenTofu Destroy

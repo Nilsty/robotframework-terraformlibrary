@@ -18,7 +18,7 @@ def utests(context):
         "pytest",
         f"{ROOT}/utest",
     ]
-    subprocess.run(" ".join(cmd), shell=True, check=False)
+    subprocess.run(" ".join(cmd), shell=True, check=True)
 
 @task
 def atests(context):
@@ -33,7 +33,7 @@ def atests(context):
         "--outputdir=./reports",
         f"{ROOT}/atest",
     ]
-    subprocess.run(" ".join(cmd), shell=True, check=False)
+    subprocess.run(" ".join(cmd), shell=True, check=True)
 
 @task(utests, atests)
 def tests(context):
