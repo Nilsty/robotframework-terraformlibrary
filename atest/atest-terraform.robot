@@ -8,7 +8,7 @@ ${TESTDATA}    ${CURDIR}/testdata
 Run Terraform Init
     ${rc}    ${output}    Terraform Init    ${TESTDATA}/simple
     Should Be Equal As Integers    ${rc}    0
-    Should Contain    ${output}    has been successfully initialized!
+    Should Contain    ${output}    Terraform has been successfully initialized!
 
 Run Terraform Plan
     Set TF Var    my_var    test_value
