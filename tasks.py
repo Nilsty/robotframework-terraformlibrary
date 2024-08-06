@@ -30,6 +30,7 @@ def atests(context):
         "-m",
         "robot",
         "--loglevel=TRACE:DEBUG",
+        "--outputdir=./reports",
         f"{ROOT}/atest",
     ]
     subprocess.run(" ".join(cmd), shell=True, check=False)
