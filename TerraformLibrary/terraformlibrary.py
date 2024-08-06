@@ -183,7 +183,7 @@ class TerraformLibrary:
         command = f"{self.exec} -chdir={script_path} show --json"
         rc, output = self._run_command(command)
         if rc > 0:
-            logger.write(f"error = {output}")
+            logger.error(f"error = {output}")
             return output
         else:
             output_json = json.loads(output)
