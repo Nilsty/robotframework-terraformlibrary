@@ -72,7 +72,7 @@ class TerraformLibrary:
     def __init__(self, executable="terraform"):
         """
         The TerraformLibrary can either use the terraform executable (default) or can be configured
-        to run OpenTofu instead by setting the executable to `tofu`.
+        to run OpenTofu instead by setting the executable to `tofu`. https://opentofu.org/
         | ***** Settings *****
         | Library    TerraformLibrary    executable=tofu
         """
