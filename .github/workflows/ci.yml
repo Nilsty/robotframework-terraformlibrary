@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: '3.10'
 
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1
@@ -26,7 +26,7 @@ jobs:
           installer-parallel: true
 
       - name: Cache poetry virtualenv
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         id: cache
         with:
           path: ~/.virtualenvs
@@ -42,7 +42,27 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.5.7"
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with: 
+          tofu_wrapper: false
       
       - name: Run tests
         run: |
           poetry run invoke tests
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reports
+          path: ${{ github.workspace }}/reports
+          
+      - name: Send report to commit
+        if: ${{ always() }}
+        uses: joonvena/robotframework-reporter-action@v2.5
+        with:
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+          only_summary: true
+          failed_tests_on_top: true
