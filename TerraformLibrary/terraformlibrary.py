@@ -180,7 +180,7 @@ class TerraformLibrary:
         | Should Be Equal As Strings | ${output["values"]["root_module"]["resources"][0]["name"]} | name of the first resource |
 
         """
-        command = f"{self.exec} -chdir={script_path} show --json"
+        command = f"{self.exec} -chdir={script_path} show -json"
         rc, output = self._run_command(command)
         logger.info(f'{output}')
         if rc > 0:
