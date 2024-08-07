@@ -182,11 +182,9 @@ class TerraformLibrary:
         """
         command = f"{self.exec} -chdir={script_path} show -json"
         rc, output = self._run_command(command)
-        logger.info(f'{output}')
-        if rc > 0:
-            logger.info(f'{output}')
-            logger.error(f"error = {output}")
-            return output
-        else:
+        try:
             output_json = json.loads(output)
             return output_json
+        except:
+            logger.warn("output not in json format")
+            return output
