@@ -5,6 +5,10 @@ TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
 
 https://developer.hashicorp.com/terraform/cli
 
+The library can also be configured to run OpenTofu instead of Terraform.
+
+https://opentofu.org/
+
 ---
 ## Keyword Documentation
 [Link to the keyword documentation](https://nilsty.github.io/robotframework-terraformlibrary/terraformlibrary.html)
@@ -60,10 +64,22 @@ $ source $(poetry env info --path)/bin/activate
 $ poetry install
 ```
 
-Run the tests:
+Run the unit tests:
 
 ```
-$ poetry run pytest -v
+$ poetry run invoke utests
+```
+
+Run the acceptance tests:
+
+```
+$ poetry run invoke atests
+```
+
+Run all tests:
+
+```
+$ poetry run invoke tests
 ```
 
 Exit the virtualenv
