@@ -5,11 +5,10 @@ on:
     types: [published]
 
 jobs:
-
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write 
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
