@@ -53,22 +53,31 @@ Run Terraform Destroy
 
 """
 
+import json
 import os
 import subprocess
-import json
+from importlib.metadata import version
+
 from robot.api import logger
 from robot.api.deco import library
 
-@library(scope="GLOBAL", auto_keywords=True)
+try:
+    __version__ = version("robotframework-terraformlibrary")
+except Exception:
+    pass
+
+
+@library(scope="GLOBAL", version=__version__, auto_keywords=True)
 class TerraformLibrary:
     """
     The Terraform Library is a wrapper for the Terraform CLI.
 
-    With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from 
-    terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used 
-    with any terraform script. 
+    With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from
+    terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used
+    with any terraform script.
 
     """
+
     def __init__(self, executable="terraform"):
         """
         The TerraformLibrary can either use the terraform executable (default) or can be configured
@@ -80,7 +89,10 @@ class TerraformLibrary:
 
     def _run_command(self, command: str, include_stderr: bool = False):
         process = subprocess.run(
-            command, shell=True, stdout=subprocess.PIPE, stderr=(subprocess.STDOUT if include_stderr else subprocess.PIPE)
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=(subprocess.STDOUT if include_stderr else subprocess.PIPE),
         )
         output = process.stdout.decode()
         rc = process.returncode
@@ -90,11 +102,11 @@ class TerraformLibrary:
 
     def terraform_init(self, script_path: str):
         """
-        ``terraform init`` 
+        ``terraform init``
         Initialize your terraform working directory and download any needed providers.
-        
+
         https://developer.hashicorp.com/terraform/cli/commands/init
-        
+
         Example:
         | ${rc} | ${output} | Terraform Init | ${PATH_TO_TERRAFORM_SCRIPT} |
 
@@ -103,14 +115,14 @@ class TerraformLibrary:
         command = f"{self.exec} -chdir={script_path} init -no-color"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
-    
+
     def terraform_plan(self, script_path: str):
         """
-        ``terraform plan`` 
+        ``terraform plan``
         Create the terraform plan.
-        
+
         https://developer.hashicorp.com/terraform/cli/commands/plan
-        
+
         Example:
         | ${rc} | ${output} | Terraform Plan | ${PATH_TO_TERRAFORM_SCRIPT} |
 
@@ -122,9 +134,9 @@ class TerraformLibrary:
 
     def terraform_apply(self, script_path: str):
         """
-        ``terraform apply`` 
+        ``terraform apply``
         Applies the terraform plan and creates resources.
-        
+
         https://developer.hashicorp.com/terraform/cli/commands/apply
 
         Example:
@@ -138,9 +150,9 @@ class TerraformLibrary:
 
     def terraform_destroy(self, script_path: str):
         """
-        ``terraform destroy`` 
+        ``terraform destroy``
         Destroys the applied resources.
-        
+
         https://developer.hashicorp.com/terraform/cli/commands/destroy
 
         Example:
@@ -154,7 +166,7 @@ class TerraformLibrary:
 
     def set_tf_var(self, name: str, value: str):
         """
-        Set an environment variable with the prefix TF_VAR_. 
+        Set an environment variable with the prefix TF_VAR_.
         Due to the prefix this environment variables will become available to the terraform execution.
 
         https://developer.hashicorp.com/terraform/cli/config/environment-variables#tf_var_name
@@ -167,7 +179,7 @@ class TerraformLibrary:
         """
         prefix = "TF_VAR_"
         os.environ[f"{prefix}{name}"] = f"{value}"
-    
+
     def get_terraform_state(self, script_path: str):
         """
         Get Terraform State will execute the command `terraform show --json`.
