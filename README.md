@@ -1,13 +1,9 @@
 # Terraform Library for Robot Framework
 [![PyPI](https://img.shields.io/pypi/v/robotframework-terraformlibrary)](https://pypi.org/project/robotframework-terraformlibrary/)[![PyPi downloads](https://img.shields.io/pypi/dm/robotframework-terraformlibrary.svg)](https://pypi.python.org/pypi/robotframework-terraformlibrary)
 
-TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
+TerraformLibrary is a wrapper for the [Hashicorp Terraform CLI](https://developer.hashicorp.com/terraform/cli)
 
-https://developer.hashicorp.com/terraform/cli
-
-The library can also be configured to run OpenTofu instead of Terraform.
-
-https://opentofu.org/
+The library can also be configured to run [OpenTofu](https://opentofu.org/) instead of Terraform.
 
 ---
 ## Keyword Documentation
