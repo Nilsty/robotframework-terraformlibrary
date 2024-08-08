@@ -86,6 +86,7 @@ deactivate
 ---
 ## Releasing new versions to PyPi
 
+The Robotframework-TerraformLibrary is released on [PyPi.org](https://pypi.org/project/robotframework-terraformlibrary/).
 To release a new version of the library to PyPi, a few steps are needed.
 - update the version number in [pyproject.toml](pyproject.toml)
 - rebuild the keyword documentation with the command `poetry run libdoc`
