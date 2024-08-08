@@ -83,3 +83,11 @@ Exit the virtualenv
 ```
 deactivate
 ```
+---
+## Releasing new versions to PyPi
+
+To release a new version of the library to PyPi, a few steps are needed.
+- update the version number in [pyproject.toml](pyproject.toml)
+- rebuild the keyword documentation with the command `poetry run libdoc`
+- create a pull request with the updated pyproject.toml and the keyword documentation under `docs/terraformlibrary.html`
+- once the pull request is merged a new github release can be created and published which will trigger a [github action](.github/workflows/publish.yml) publishing the release to PyPi via a trusted publisher setup.
