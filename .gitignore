@@ -14,3 +14,5 @@ terraform.tfstate.backup
 .pytest_cache
 poetry.lock
 venv
+private_key.pem
+.env
