@@ -43,6 +43,6 @@ Compare private DNS with Hostname
     Should Be Equal As Strings    ${HOSTNAME}    ${EC2_PRIVATE_DNS}
 
 Destroy EC2 Instance via Terraform
-    ${rc}    ${output}    Terraform Destroy    .
+    ${rc}    ${output}    Terraform Destroy    examples/ec2
     Log    ${output}
     IF    ${rc} != 0    Fail    Terraform Error:\n${output}
