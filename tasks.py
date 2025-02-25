@@ -1,11 +1,14 @@
 import pathlib
 import subprocess
 from importlib.metadata import version
+
 from invoke import task
+
 from TerraformLibrary import terraformlibrary
 
 ROOT = pathlib.Path(__file__).parent.resolve().as_posix()
 VERSION = version("robotframework-terraformlibrary")
+
 
 @task
 def utests(context):
@@ -19,6 +22,7 @@ def utests(context):
         f"{ROOT}/utest",
     ]
     subprocess.run(" ".join(cmd), shell=True, check=True)
+
 
 @task
 def atests(context):
@@ -35,11 +39,13 @@ def atests(context):
     ]
     subprocess.run(" ".join(cmd), shell=True, check=True)
 
+
 @task(utests, atests)
 def tests(context):
     subprocess.run("coverage combine", shell=True, check=False)
     subprocess.run("coverage report", shell=True, check=False)
     subprocess.run("coverage html", shell=True, check=False)
+
 
 @task
 def libdoc(context):
@@ -55,6 +61,7 @@ def libdoc(context):
         target,
     ]
     subprocess.run(" ".join(cmd), shell=True, check=False)
+
 
 @task
 def readme(context):

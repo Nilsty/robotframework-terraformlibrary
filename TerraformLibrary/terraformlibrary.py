@@ -3,9 +3,9 @@
 
 The TerraformLibrary is a wrapper for the Hashicorp Terraform CLI
 
-With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from 
-terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used 
-with any terraform script. 
+With the integration of Terraform into Robot Framework, inputs can be passed from tests to terraform executions and outputs from
+terraform script can be used in robot tests. Commands like ``terraform init``, ``plan``, ``apply`` and ``destroy`` can be used
+with any terraform script.
 
 https://developer.hashicorp.com/terraform/cli
 
@@ -15,7 +15,7 @@ https://developer.hashicorp.com/terraform/cli
 
 ---
 ## Installation
-If you already have Python >= 3.8 with pip installed, you can simply run:  
+If you already have Python >= 3.8 with pip installed, you can simply run:
 `pip install --upgrade robotframework-terraformlibrary`
 
 ---
@@ -82,8 +82,8 @@ class TerraformLibrary:
         """
         The TerraformLibrary can either use the terraform executable (default) or can be configured
         to run OpenTofu instead by setting the executable to `tofu`. https://opentofu.org/
-        | ***** Settings *****
-        | Library    TerraformLibrary    executable=tofu
+        | ***** Settings ***** |
+        | Library | TerraformLibrary | executable=tofu |
         """
         self.exec = executable
 
@@ -116,7 +116,7 @@ class TerraformLibrary:
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
-    def terraform_plan(self, script_path: str):
+    def terraform_plan(self, script_path: str, vars: dict = {}, var_files: list = []):
         """
         ``terraform plan``
         Create the terraform plan.
@@ -126,13 +126,27 @@ class TerraformLibrary:
         Example:
         | ${rc} | ${output} | Terraform Plan | ${PATH_TO_TERRAFORM_SCRIPT} |
 
+        Example with passing in inputs as command line aguments:
+        | &{terraform_inputs} | Create Dictionary | input_one=value1 | input_two=value2 |
+        | ${rc} | ${output} | Terraform Plan | ${PATH_TO_TERRAFORM_SCRIPT} | ${terraform_inputs} |
+
+        Example with passing in inputs as a file:
+        | Create File | my_inputs.tfvars | input_one = "value1" \\ninput_two = "value2" |
+        | ${rc} | ${output} | Terraform Plan | ${PATH_TO_TERRAFORM_SCRIPT} | var_files=["my_inputs.tfvars"] |
+
         Returns the return code and the output of the terraform command.
         """
         command = f"{self.exec} -chdir={script_path} plan -no-color -input=false"
+        if vars:
+            for k, v in vars.items():
+                command = f"{command} -var '{k}={v}'"
+        if var_files:
+            for file in var_files:
+                command = f"{command} -var-file={file}"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
-    def terraform_apply(self, script_path: str):
+    def terraform_apply(self, script_path: str, vars: dict = {}, var_files: list = []):
         """
         ``terraform apply``
         Applies the terraform plan and creates resources.
@@ -142,13 +156,29 @@ class TerraformLibrary:
         Example:
         | ${rc} | ${output} | Terraform Apply | ${PATH_TO_TERRAFORM_SCRIPT} |
 
+        Example with passing in inputs as command line aguments:
+        | &{terraform_inputs} | Create Dictionary | input_one=value1 | input_two=value2 |
+        | ${rc} | ${output} | Terraform Apply | ${PATH_TO_TERRAFORM_SCRIPT} | ${terraform_inputs} |
+
+        Example with passing in inputs as a file:
+        | Create File | my_inputs.tfvars | input_one = "value1" \\ninput_two = "value2" |
+        | ${rc} | ${output} | Terraform Apply | ${PATH_TO_TERRAFORM_SCRIPT} | var_files=["my_inputs.tfvars"] |
+
         Returns the return code and the output of the terraform command.
         """
         command = f"{self.exec} -chdir={script_path} apply -auto-approve -no-color -input=false"
+        if vars:
+            for k, v in vars.items():
+                command = f"{command} -var '{k}={v}'"
+        if var_files:
+            for file in var_files:
+                command = f"{command} -var-file={file}"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
-    def terraform_destroy(self, script_path: str):
+    def terraform_destroy(
+        self, script_path: str, vars: dict = {}, var_files: list = []
+    ):
         """
         ``terraform destroy``
         Destroys the applied resources.
@@ -158,9 +188,23 @@ class TerraformLibrary:
         Example:
         | ${rc} | ${output} | Terraform Destroy | ${PATH_TO_TERRAFORM_SCRIPT} |
 
+        Example with passing in inputs as command line aguments:
+        | &{terraform_inputs} | Create Dictionary | input_one=value1 | input_two=value2 |
+        | ${rc} | ${output} | Terraform Destroy | ${PATH_TO_TERRAFORM_SCRIPT} | ${terraform_inputs} |
+
+        Example with passing in inputs as a file:
+        | Create File | my_inputs.tfvars | input_one = "value1" \\ninput_two = "value2" |
+        | ${rc} | ${output} | Terraform Destroy | ${PATH_TO_TERRAFORM_SCRIPT} | var_files=["my_inputs.tfvars"] |
+
         Returns the return code and the output of the terraform command.
         """
         command = f"{self.exec} -chdir={script_path} destroy -auto-approve -no-color -input=false"
+        if vars:
+            for k, v in vars.items():
+                command = f"{command} -var '{k}={v}'"
+        if var_files:
+            for file in var_files:
+                command = f"{command} -var-file={file}"
         rc, output = self._run_command(command, include_stderr=True)
         return rc, output
 
@@ -176,6 +220,9 @@ class TerraformLibrary:
 
         This will set the environment variable `TF_VAR_my_var_name`.
         Which will be available as an input to the terraform script as `my_var_name`.
+
+        Keep in mind that environment variables are shared between threads when running tests in parallel
+        in the same environment. It's recommended to use the `vars` or `var_files` arguments instead.
         """
         prefix = "TF_VAR_"
         os.environ[f"{prefix}{name}"] = f"{value}"
